@@ -10,7 +10,7 @@ namespace Borica.Integration.Models
     /// Created: 07.05.2016
     /// Description: Parsed Borica responce data
     /// </summary>
-    public class BoricaResponceModel
+    public class BoricaResponceModel : BoricaComunicationModel
     {
         // In result of the transaction request, the merchant’s site receives from APGW a BOResp message. 
         // The format of BOResp is as follows:

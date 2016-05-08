@@ -19,6 +19,8 @@ namespace Borica.Integration.Models
 
         private int amount;
 
+        private string terminalId;
+
         /// <summary>
         /// Type of the transaction to perform
         /// </summary>
@@ -66,6 +68,24 @@ namespace Borica.Integration.Models
             set
             {
                 this.amount = value;
+            }
+        }
+
+        /// <summary>
+        /// Virtual POS Identifier 
+        /// Maximum 8 symbols in range ASCII code 33 - 126.
+        /// </summary>
+        public string TerminalId
+        {
+            get
+            {
+                return this.terminalId;
+            }
+
+            set
+            {
+                StringValidator(value, 8, "TerminalId");
+                this.terminalId = String.Format("{0,-8}", value);
             }
         }
 
