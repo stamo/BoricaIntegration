@@ -50,6 +50,11 @@ namespace Borica.Integration.Constants
         public static string[] allowedCurrencies = new string[] { "BGN", "EUR", "USD" };
 
         /// <summary>
+        /// Borica DataTime format
+        /// </summary>
+        public const string BoricaDateTime = "yyyyMMddHHmmss";
+
+        /// <summary>
         /// Get ErrorMessage by code
         /// </summary>
         /// <param name="code">Error code</param>
