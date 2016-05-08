@@ -45,6 +45,7 @@
     <Compile Include="Enumerations\PemStringType.cs" />
     <Compile Include="Helper\CryptoHelper.cs" />
     <Compile Include="Helper\SignHelper.cs" />
+    <Compile Include="Models\BoricaComunicationModel.cs" />
     <Compile Include="Models\BoricaRequestModel.cs" />
     <Compile Include="Models\BoricaResponceModel.cs" />
     <Compile Include="Models\BoricaTransactionStatusModel.cs" />

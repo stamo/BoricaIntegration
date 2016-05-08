@@ -10,7 +10,7 @@ namespace Borica.Integration.Models
     /// Created: 07.05.2016
     /// Description: Data to prepare for sending to Borica
     /// </summary>
-    public class BoricaRequestModel
+    public class BoricaRequestModel : BoricaComunicationModel
     {
         // Format of the BOReq message in version 1.1
         // No.	Field name								Format
@@ -25,67 +25,11 @@ namespace Borica.Integration.Models
         // 9	Currency								A[3]
         // 10	Digital signature						B[128]
 
-        private BoricaTransactionType transactionType;
-
-        private string orderNumber;
-
-        private int amount;
-
         private string description;
 
         private string lang;
 
         private string currency;
-
-        /// <summary>
-        /// Type of the transaction to perform
-        /// </summary>
-        public BoricaTransactionType TransactionType
-        {
-            get
-            {
-                return this.transactionType;
-            }
-
-            set
-            {
-                this.transactionType = value;
-            }
-        }
-
-        /// <summary>
-        /// Unique order identifier. 
-        /// Maximum 15 symbols in range ASCII code 33 - 126.
-        /// </summary>
-        public string OrderNumber
-        {
-            get
-            {
-                return this.orderNumber;
-            }
-
-            set
-            {
-                StringValidator(value, 15, "OrderNumber");
-                this.orderNumber = String.Format("{0,-15}", value);
-            }
-        }
-
-        /// <summary>
-        /// Transaction ammount in cents.
-        /// </summary>
-        public int Amount
-        {
-            get
-            {
-                return this.amount;
-            }
-
-            set
-            {
-                this.amount = value;
-            }
-        }
 
         /// <summary>
         /// Brief description of the transaction.
@@ -159,39 +103,6 @@ namespace Borica.Integration.Models
 
                 this.currency = value.ToUpper();
             }
-        }
-
-        /// <summary>
-        /// Validates string properties
-        /// </summary>
-        /// <param name="value">Property value</param>
-        /// <param name="maxLength">Maximum length of the property</param>
-        /// <param name="propertyName">Name of the property</param>
-        /// <returns></returns>
-        private bool StringValidator(string value, int maxLength, string propertyName)
-        {
-            bool result = true;
-
-            if (value == null)
-            {
-                throw new ArgumentNullException(String.Format("The property \"{0}\" can not be null!", 
-                    propertyName));
-            }
-
-            if (value.Length > maxLength)
-            {
-                throw new ArgumentOutOfRangeException(String.Format("The maximum length of \"{0}\" is {1}!", 
-                    propertyName, maxLength));
-            }
-
-            if (value.Any(c => (int)c < 32 || (int)c > 126))
-            {
-                throw new ArgumentOutOfRangeException(String
-                    .Format("Only symbols with ASCII code between 33 and 126 can be used for property \"{0}\"!", 
-                    propertyName));
-            }
-
-            return result;
         }
     }
 }
