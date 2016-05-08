@@ -33,6 +33,11 @@ namespace Borica.Integration.Models
         public DateTime TransactionTime { get; set; }
 
         /// <summary>
+        /// Description of FinalizationCode
+        /// </summary>
+        public string FinalizationMessage { get; set; }
+
+        /// <summary>
         /// Status of the transaction
         /// </summary>
         public string FinalizationCode

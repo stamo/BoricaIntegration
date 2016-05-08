@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -94,7 +95,40 @@ namespace Borica.Integration
         /// <returns></returns>
         public BoricaResponceModel ParseResponce(string eBorica)
         {
-            return new BoricaResponceModel();
+            BoricaResponceModel boricaResponce = null;
+
+            try
+            {
+                var encoder = new ASCIIEncoding();
+                var responce = CryptoHelper.DecodeUrlString(eBorica);
+                var binaryMessage = Convert.FromBase64String(responce);
+                var originalMessage = binaryMessage.Take(56).ToArray();
+                var signedMessage = binaryMessage.Skip(56).Take(128).ToArray();
+
+                if (!VerifyMessage(originalMessage, signedMessage))
+                {
+                    throw new ApplicationException("The message signature is invalid!");
+                }
+
+                responce = encoder.GetString(originalMessage);
+                boricaResponce = new BoricaResponceModel()
+                {
+                    TransactionType = (BoricaTransactionType)int.Parse(responce.Substring(0, 2)),
+                    TransactionTime = DateTime.ParseExact(responce.Substring(2, 14),
+                        BoricaConstants.BoricaDateTime, CultureInfo.InvariantCulture),
+                    Amount = int.Parse(responce.Substring(16, 12)),
+                    TerminalId = responce.Substring(28, 8),
+                    OrderNumber = responce.Substring(36, 15).Trim(),
+                    FinalizationCode = responce.Substring(51, 2),
+                    FinalizationMessage = BoricaConstants.GetErrorMessage(responce.Substring(51, 2))
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error during parsing Borica's responce! Check inner exception for more details.", ex);
+            }
+
+            return boricaResponce;
         }
 
         /// <summary>
@@ -139,6 +173,39 @@ namespace Borica.Integration
             catch (Exception ex)
             {
                 throw new ApplicationException("There was an error during signing of the transaction! Please, check inner exception for details.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Verifies message signature
+        /// </summary>
+        /// <param name="originalMessage">Original message</param>
+        /// <param name="signedMessage">Signed message</param>
+        /// <returns></returns>
+        private bool VerifyMessage(byte[] originalMessage, byte[] signedMessage)
+        {
+            bool result = false;
+            try
+            {
+                string keyString = null;
+
+                if (!File.Exists(this.publicKeyPath))
+                {
+                    throw new FileNotFoundException("The path to public key is invalid!");
+                }
+
+                using (TextReader tr = new StreamReader(this.publicKeyPath))
+                {
+                    keyString = tr.ReadToEnd();
+                }
+
+                byte[] keyBytes = CryptoHelper.GetBytesFromPEM(keyString, PemStringType.RsaPublicKey);
+
+                return SignHelper.VerifyData(originalMessage, signedMessage, keyBytes);
+            }
+            catch (Exception)
+            {
+                return result;
             }
         }
     }
