@@ -24,5 +24,32 @@ namespace Borica.Integration.Models
         // 6	Finalization code					N[2]
         // 7	Protocol version					A[3]
         // 8	Digital signature					B[128]
+
+        private string finalizationCode;
+        
+        public DateTime TransactionTime { get; set; }
+
+        public string FinalizationCode
+        {
+            get
+            {
+                return this.finalizationCode;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("The property \"FinalizationCode\" can not be null!");
+                }
+                // ASCII 48 == 0, ASCII 57 == 9
+                if (value.Length != 2 || value.Any(c => (int)c < 48 || (int)c > 57))
+                {
+                    throw new FormatException("The format of the property \"FinalizationCode\" is incorect!");
+                }
+
+                this.finalizationCode = value;
+            }
+        }
     }
 }
