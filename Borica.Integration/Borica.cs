@@ -139,7 +139,7 @@ namespace Borica.Integration
         /// <returns></returns>
         public BoricaTransactionStatusModel GetTransactionStatusRequest(BoricaTSRequestModel model)
         {
-            return new BoricaTransactionStatusModel();
+            throw new NotImplementedException();
         }
 
         /// <summary>
