@@ -27,8 +27,14 @@ namespace Borica.Integration.Models
 
         private string finalizationCode;
         
+        /// <summary>
+        /// Date and Time of transaction
+        /// </summary>
         public DateTime TransactionTime { get; set; }
 
+        /// <summary>
+        /// Status of the transaction
+        /// </summary>
         public string FinalizationCode
         {
             get
