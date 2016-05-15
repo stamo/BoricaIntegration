@@ -15,7 +15,7 @@ namespace Borica.Integration.Constants
         /// <summary>
         /// Normally executed authorization
         /// </summary>
-        public const string Success = "00";
+        internal const string Success = "00";
 
         /// <summary>
         /// Error messages
@@ -42,24 +42,40 @@ namespace Borica.Integration.Constants
         /// <summary>
         /// Allowed Borica interface languages
         /// </summary>
-        public static string[] allowedLanguages = new string[] { "BG", "EN" };
+        internal static string[] allowedLanguages = new string[] { "BG", "EN" };
 
         /// <summary>
         /// Allowed curencies in Borica sysytem
         /// </summary>
-        public static string[] allowedCurrencies = new string[] { "BGN", "EUR", "USD" };
+        internal static string[] allowedCurrencies = new string[] { "BGN", "EUR", "USD" };
 
         /// <summary>
         /// Borica DataTime format
         /// </summary>
-        public const string BoricaDateTime = "yyyyMMddHHmmss";
+        internal const string BoricaDateTime = "yyyyMMddHHmmss";
+
+        /// <summary>
+        /// Borica gateway URL for registration of transactions
+        /// </summary>
+        internal const string RegisterUrl = "https://gate.borica.bg/boreps/registerTransaction";
+
+        /// <summary>
+        /// Borica gateway URL for checking status 
+        /// of transactions with lost response
+        /// </summary>
+        internal const string TransactionStatusUrl = "https://gate.borica.bg/boreps/transactionStatusReport";
+
+        /// <summary>
+        /// Borica gateway URL for managing transactions
+        /// </summary>
+        internal const string ManageTransactionUrl = "https://gate.borica.bg/boreps/manageTransaction";
 
         /// <summary>
         /// Get ErrorMessage by code
         /// </summary>
         /// <param name="code">Error code</param>
         /// <returns></returns>
-        public static string GetErrorMessage(string code)
+        internal static string GetErrorMessage(string code)
         {
             if (code == Success)
             {
